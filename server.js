@@ -22,11 +22,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 //Router Api
-var Product = restful.model('test', mongoose.Schema({
+var blogSchema = restful.model('blog-schema', mongoose.Schema({
   title: String,
-  year: Number
+  preview: String,
+  content: String,
+  comments: [{ body: String, date: Date}],
+  createdAt: {type: Date, default: Date.now}
 },{collection: 'blogApp'})).methods(['put','get','post','delete']);
-Product.register(app,'/test');
+blogSchema.register(app,'/articles');
 //Get /contact and sending file just to test
 app.get('/contact',function(req,res) {
   res.sendFile(path.join(__dirname+"/contact.html"))
@@ -38,7 +41,7 @@ app.get('/contact',function(req,res) {
 app.post('/contact', function(req, res) {
   var data = req.body;
   ajax
-    .post('localhost:3000/test')
+    .post('localhost:3000/articles')
     .send(data)
     .end(function(err,res) {
       if(err || !res.ok) {

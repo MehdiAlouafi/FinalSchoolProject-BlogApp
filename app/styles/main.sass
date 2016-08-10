@@ -1,2 +1,44 @@
+// Variables
+
+$heading: 'Crete Round'
+$body: 'Lato'
+$bodytext: #2A2727
+
+// Imports
+
 @import 'fonts'
 @import 'base-styles'
+@import 'header'
+@import 'hero-header'
+@import 'articles'
+
+.loader
+  position: relative
+  height: 50px
+  width: 50px
+  background-color: #eee
+  border-radius: 50%
+  margin: 0 auto
+  animation: rotate 2s ease-in-out infinite
+  &:after, &:before
+    content: ' '
+    position: absolute
+    display: block
+    width: 50px
+    height: 50px
+    border-radius: 50%
+  &:after
+    top: -4px
+    left: -4px
+    border: 4px solid transparent
+    border-top-color: orangered
+    border-bottom-color: orangered
+    animation: spinny 2s linear infinite
+
+@keyframes spinny
+  0%
+    transform: rotate(0deg) scale(1)
+  50%
+    transform: rotate(45deg) scale(1.2)
+  100%
+    transform: rotate(360deg) scale(1)

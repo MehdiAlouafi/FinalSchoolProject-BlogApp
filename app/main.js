@@ -10,13 +10,17 @@ require('./styles/main.sass');
 
 // pages
 
-import Layout from './pages/Home.js'
-
+import HeroHeader from './components/Hero-Header';
+import Layout from './pages/Home.js';
 
 
 ReactDOM.render(
 
-
-  <Layout />,
+  <div>
+      <Layout>
+        <HeroHeader />
+      </Layout>
+  </div>
+,
 
 document.getElementById('root'));

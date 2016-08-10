@@ -4,6 +4,10 @@
 body, html
   margin: 0
   padding: 0
+h1
+  font:
+    family: $heading
+  color: $bodytext
 ul
   margin: 0
   padding: 0
@@ -11,9 +15,18 @@ li
   list-style: none
 a
   text-decoration: none
+  font:
+    family: $body
+  color: #2A2727
 
 .clearfix::before, .clearfix::after
   content: ' '
   display: table
 .clearfix::after
   clear: both
+
+.wrapper
+  width: 750px
+  max-width: 90%
+  margin: 0 auto
+  padding: 0 20px
