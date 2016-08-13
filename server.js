@@ -29,7 +29,7 @@ var blogSchema = restful.model('blog-schema', mongoose.Schema({
   comments: [{ body: String, date: Date}],
   createdAt: {type: Date, default: Date.now}
 },{collection: 'blogApp'})).methods(['put','get','post','delete']);
-blogSchema.register(app,'/articles');
+blogSchema.register(app,'/api/articles');
 //Get /contact and sending file just to test
 app.get('/contact',function(req,res) {
   res.sendFile(path.join(__dirname+"/contact.html"))

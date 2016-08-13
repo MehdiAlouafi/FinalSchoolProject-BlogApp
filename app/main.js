@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import { Router, Route, IndexRoute } from 'react-router';
+import { browserHistory } from 'react-router';
 
 // Stylesheet
 
@@ -11,16 +12,25 @@ require('./styles/main.sass');
 // pages
 
 import HeroHeader from './components/Hero-Header';
-import Layout from './pages/Home.js';
+import Articles from './components/Articles';
+import ArticlesDetail from './components/ArticlesDetail';
 
-
+import App from './pages/App';
 ReactDOM.render(
 
-  <div>
-      <Layout>
-        <HeroHeader />
-      </Layout>
-  </div>
+    <Router history={browserHistory}>
+
+        <Route path="/" component={ App } >
+
+            <IndexRoute component={HeroHeader} />
+            <Route path="articles" component={Articles} />
+
+            <Route path="articles/:id" component={ArticlesDetail} />
+
+        </Route>
+
+    </Router>
+
 ,
 
 document.getElementById('root'));
