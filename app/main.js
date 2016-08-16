@@ -11,9 +11,10 @@ require('./styles/main.sass');
 
 // pages
 
-import HeroHeader from './components/Hero-Header';
+import AdminDashboard from './components/AdminDashboard';
 import Articles from './components/Articles';
 import ArticlesDetail from './components/ArticlesDetail';
+import HeroHeader from './components/Hero-Header';
 
 import App from './pages/App';
 ReactDOM.render(
@@ -26,6 +27,7 @@ ReactDOM.render(
             <Route path="articles" component={Articles} />
 
             <Route path="articles/:id" component={ArticlesDetail} />
+            <Route path="admin" component={AdminDashboard} />
 
         </Route>
 

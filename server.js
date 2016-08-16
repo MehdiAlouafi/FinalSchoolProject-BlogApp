@@ -13,7 +13,10 @@ const app = express();
 const restful = require('node-restful');
 const mongoose = restful.mongoose;
 const ajax    = require('superagent');
+var ObjectId = mongoose.Schema.Types.ObjectId;
+
 //MongoDb
+
 mongoose.connect('mongodb://admin:admin@ds145325.mlab.com:45325/blog_eval_simplon')
 
 //Express
@@ -22,18 +25,56 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 //Router Api
+
 var blogSchema = restful.model('blog-schema', mongoose.Schema({
   title: String,
   preview: String,
-  content: String,
+  content: [{test: String, body: String}],
   comments: [{ body: String, date: Date}],
   createdAt: {type: Date, default: Date.now}
 },{collection: 'blogApp'})).methods(['put','get','post','delete']);
 blogSchema.register(app,'/api/articles');
+
+
 //Get /contact and sending file just to test
+
 app.get('/contact',function(req,res) {
   res.sendFile(path.join(__dirname+"/contact.html"))
 });
+
+app.post('/admin', function(req, res) {
+  var test = req.body;
+
+  test.map(function(test, i) {
+    blogSchema.update(
+      {title: "please work AGAIN"},
+      {
+        $push: {
+          content: {
+            test: test.type,
+            body: test.body
+          }
+        }
+      },
+        function(err,stat,dude){
+          console.log(stat);
+        })
+  })
+  // blogSchema.update(
+  //   {title: "please work AGAIN"},
+  //   {
+  //     $pushAll: {
+  //       content: {
+  //          $each: {test}
+  //       }
+  //     }
+  //   },
+  //   function(err, stat, fuck) {
+  //     console.log(stat);
+  //   }
+  // )
+
+})
 //express check for any POST request in /contact
 //We store the request body in data
 //then we invoke ajax (superagent) and post that data
