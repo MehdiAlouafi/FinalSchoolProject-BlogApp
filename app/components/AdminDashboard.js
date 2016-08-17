@@ -10,42 +10,26 @@ export default class AdminDashboard extends React.Component {
     }
   }
 
-  addArticle(e) {
+  addContent(tagType) {
     const { newText } = this.refs;
 
-    var newState = this.state.article.push({ type: e, body: newText.value });
+    var newState = this.state.article.push({ type: tagType, body: newText.value });
 
     this.setState({newState});
-    console.log(this.state.article);
 
   }
   addTitle() {
-    this.setState({title: "First Dynamic Article"});
+    const { newText } = this.refs;
+
+    this.setState({title: newText.value});
   }
   postRequest() {
-        var data = JSON.stringify(this.state.article);
-        console.log(data);
-        //
-        // this.state.article.map((article, i) => {
-        //   ajax.put("http://localhost:3000/api/articles/57b2617c5ca1678213025dec")
-        //       .set('Content-Type', 'application/json')
-        //       .send({
-        //           content: JSON.stringify()
-        //       })
-        //       .end((err, res) => {
-        //         if(!err && res) {
-        //           console.log("yah");
-        //         } else {
-        //           console.log("breuk");
-        //         }
-        //       })
-        // })
-          //
-          ajax.post("http://localhost:3000/admin")
+          ajax.post("http://localhost:3000/admin/save")
               .send(
-                
-                  this.state.article
-              )
+                {
+                  title: this.state.title,
+                  content: this.state.article
+                })
               .end((err, res) => {
                 if(!err && res) {
                   console.log("yah");
@@ -73,11 +57,11 @@ export default class AdminDashboard extends React.Component {
             })
         }
         <textarea ref="newText" type="text" ></textarea>
-        <button onClick={this.postRequest.bind(this)}>Post it</button>
 
+        <button onClick={this.postRequest.bind(this)}>Post it</button>
         <button onClick={this.addTitle.bind(this)}>New title</button>
-        <button onClick={this.addArticle.bind(this, "p")}>Click paragraph</button>
-        <button onClick={this.addArticle.bind(this, "h2")}>click h2</button>
+        <button onClick={this.addContent.bind(this, "p")}>Click paragraph</button>
+        <button onClick={this.addContent.bind(this, "h2")}>click h2</button>
 
       </div>
 

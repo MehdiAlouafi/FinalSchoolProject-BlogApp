@@ -42,39 +42,36 @@ app.get('/contact',function(req,res) {
   res.sendFile(path.join(__dirname+"/contact.html"))
 });
 
-app.post('/admin', function(req, res) {
-  var test = req.body;
 
-  test.map(function(test, i) {
-    blogSchema.update(
-      {title: "please work AGAIN"},
-      {
-        $push: {
-          content: {
-            test: test.type,
-            body: test.body
-          }
-        }
-      },
-        function(err,stat,dude){
-          console.log(stat);
-        })
-  })
-  // blogSchema.update(
-  //   {title: "please work AGAIN"},
-  //   {
-  //     $pushAll: {
-  //       content: {
-  //          $each: {test}
-  //       }
-  //     }
-  //   },
-  //   function(err, stat, fuck) {
-  //     console.log(stat);
-  //   }
-  // )
+app.post('/admin/save', function(req, res) {
+  if(req.body.isPublished !== undefined) {
+  }
+  var articleToSave = req.body;
+  // Referencing the data we want to push
+  var  content   = articleToSave.content;
+  var  title     = articleToSave.title;
 
-})
+  // Instantiate a new entry
+  var newArticle = new blogSchema();
+
+  newArticle.title = title;
+  newArticle.content = [];
+  content.map(function(e,i){
+    newArticle.content.push({
+      type: e.type,
+      body: e.body
+    })
+  });
+  newArticle.save(function(err){
+    if (err) throw err;
+    else {
+      res.sendStatus(200);
+    }
+  });
+
+
+});
+
 //express check for any POST request in /contact
 //We store the request body in data
 //then we invoke ajax (superagent) and post that data
