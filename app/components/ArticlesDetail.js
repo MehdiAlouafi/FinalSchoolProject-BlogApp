@@ -6,7 +6,7 @@ export default class ArticleDetail extends React.Component {
   constructor() {
     super();
     this.state = {
-      article: {}
+      article: []
     }
 
   }
@@ -24,14 +24,28 @@ export default class ArticleDetail extends React.Component {
     this.fetchArticle();
   }
   renderArticle(article) {
+    console.log(article);
+      return (
+          <div>
+            <h1>{article.title}</h1>
+            {
+              article.content.map((text, i) => {
+                if(text.tag === "h2") {
 
-    return (
-      <div>
-        <h2>{article.title}</h2>
-        <p>{article.content}</p>
-      </div>
-    );
-  }
+                  return (<h2 key={text._id}>{text.body}</h2>);
+
+                } else {
+
+                  return (<p key={text._id}>{text.body}</p>);
+
+                }
+              })
+            }
+          </div>
+
+
+      );
+    }
   render() {
     let content;
     if(typeof(this.state.article.title) === "undefined") {

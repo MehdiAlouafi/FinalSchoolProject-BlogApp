@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 var blogSchema = restful.model('blog-schema', mongoose.Schema({
   title: String,
   preview: String,
-  content: [{test: String, body: String}],
+  content: [{tag: String, body: String}],
   comments: [{ body: String, date: Date}],
   createdAt: {type: Date, default: Date.now}
 },{collection: 'blogApp'})).methods(['put','get','post','delete']);
@@ -43,14 +43,14 @@ app.get('/contact',function(req,res) {
 });
 
 
-app.post('/admin/save', function(req, res) {
+app.post('/admin/add', function(req, res) {
   if(req.body.isPublished !== undefined) {
   }
   var articleToSave = req.body;
   // Referencing the data we want to push
   var  content   = articleToSave.content;
   var  title     = articleToSave.title;
-
+  var  type      = articleToSave.type;
   // Instantiate a new entry
   var newArticle = new blogSchema();
 
@@ -58,10 +58,13 @@ app.post('/admin/save', function(req, res) {
   newArticle.content = [];
   content.map(function(e,i){
     newArticle.content.push({
-      type: e.type,
+      tag: e.tag,
       body: e.body
     })
   });
+
+  // Save the entry to the data base
+
   newArticle.save(function(err){
     if (err) throw err;
     else {

@@ -19,8 +19,6 @@ export default class Articles extends React.Component {
     ajax.get(`${baseUrl}/api/articles`)
         .end((err, res) => {
           if(!err && res) {
-
-            console.log(res.body);
             this.setState({articles: res.body});
           } else {
             console.log("There was an error fetching data " + err);
