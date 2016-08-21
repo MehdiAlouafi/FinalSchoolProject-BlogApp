@@ -1,5 +1,7 @@
 import React from 'react';
 import ajax  from 'superagent';
+
+import ArticlePanel from './ArticlePanel';
 export default class AdminDashboard extends React.Component {
   constructor() {
     super();
@@ -23,30 +25,35 @@ export default class AdminDashboard extends React.Component {
   componentDidMount() {
     this.loadsArticles(window.location.origin);
   }
-  test(e) {
-    ajax
-      .del(`http://localhost:3000/api/articles/${e}`)
-      .end((err,res)=>{
-        if(!err && res) {
 
-        }
-      })
+  deleteArticle(id) {
+
+    var choice = confirm("sure ?");
+
+    if(choice === true) {
+      ajax
+        .del(`${window.location.origin}/api/articles/${id}`)
+        .end(( err , res ) => {
+          if(!err && res ) {
+
+            this.setState({active: "deleted"});
+
+          }
+        })
+    }
 
   }
+
   renderArticles() {
     return this.state.articles.map((element, i) => {
       return (
-          <div key={element._id} className="dashboard">
-            <h4>{element.title}</h4>
-            <div className="dashboard--controls">
-              <ul>
-                <li></li>
-                <li><i className="fa fa-pencil" aria-hidden="true"></i></li>
-                <li onClick={this.test.bind(this, element._id) }><i className="fa fa-trash" aria-hidden="true"></i></li>
-
-              </ul>
-            </div>
-          </div>
+        <ArticlePanel
+          key={i}
+          id={element._id}
+          class="dashboard"
+          title={element.title}
+          deleteArticle={this.deleteArticle}
+        />
       );
     })
   }

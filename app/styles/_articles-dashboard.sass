@@ -4,9 +4,14 @@
   width: 100%
   margin-bottom: 35px
   background-color: #EFEDF0
-  padding: 0 10px 0 10px
+  padding: 0 20px 0 20px
   box-shadow: 0px 2px 0px #C7C4C9
   border-radius: 2px
+  transition: all 0.3s ease-in-out
+  &.deleted
+  
+    transform: translateX(200%)
+
   h4
     position: absolute
     top: 50%
@@ -14,3 +19,16 @@
     margin: 0
     float: left
     max-width:  70%
+  &__controls
+    float: right
+    position: absolute
+    top: 50%
+    right: 20px
+    transform: translateY(-50%)
+
+    li
+      display: inline-block
+      font-size: 23px
+      margin-left: 25px
+      cursor: pointer
+      padding: 10px
