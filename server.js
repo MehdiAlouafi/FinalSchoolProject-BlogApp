@@ -42,7 +42,20 @@ app.get('/contact',function(req,res) {
   res.sendFile(path.join(__dirname+"/contact.html"))
 });
 
+app.post('/admin/edit/:id', function(req, res) {
+  console.log(req.body);
+  console.log(req.params.id);
 
+  blogSchema.update(
+    {_id: req.params.id, "content._id": req.body.element},
+    {$set: {"content.$.body": req.body.newText}},
+    function(err, numAffected) {
+      console.log(err);
+      console.log(numAffected);
+    }
+  );
+
+});
 app.post('/admin/add', function(req, res) {
   if(req.body.isPublished !== undefined) {
   }

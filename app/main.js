@@ -15,6 +15,8 @@ import AdminDashboard from './components/AdminDashboard';
 import AddNewArticle from './components/AddNewArticle';
 import Articles from './components/Articles';
 import ArticlesDetail from './components/ArticlesDetail';
+import EditArticle from './components/EditArticle';
+
 import HeroHeader from './components/Hero-Header';
 
 import App from './pages/App';
@@ -30,6 +32,7 @@ ReactDOM.render(
             <Route path="articles/:id" component={ArticlesDetail} />
             <Route path="admin" component={AdminDashboard} />
             <Route path="admin/add" component={AddNewArticle} />
+            <Route path="admin/edit/:id" component={EditArticle} />
 
         </Route>
 

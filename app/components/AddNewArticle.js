@@ -12,6 +12,7 @@ export default class AddNewArticle extends React.Component {
   }
 
   addContent(tagType) {
+
     const { newText } = this.refs;
 
     var newState = this.state.article.push({ tag: tagType, body: newText.value });
@@ -30,15 +31,16 @@ export default class AddNewArticle extends React.Component {
   postRequest() {
           ajax.post("http://localhost:3000/admin/add")
               .send(
-                {
-                  title: this.state.title,
-                  content: this.state.article
-                })
+                  {
+                    title: this.state.title,
+                    content: this.state.article
+                  }
+              )
               .end((err, res) => {
                 if(!err && res) {
                   console.log("yah");
                   if(res.status === 200) {
-                    
+
                     this.setState({saved: true});
                   }
                 } else {

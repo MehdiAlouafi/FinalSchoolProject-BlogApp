@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router';
+
 import ajax  from 'superagent';
 
 import ArticlePanel from './ArticlePanel';
@@ -67,6 +69,7 @@ export default class AdminDashboard extends React.Component {
 
     return (
       <div className="wrapper">
+        <Link to="/admin/add"> New Post </Link>
         {content}
       </div>
     );
