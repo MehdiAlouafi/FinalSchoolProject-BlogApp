@@ -16,6 +16,8 @@ import AddNewArticle from './components/AddNewArticle';
 import Articles from './components/Articles';
 import ArticlesDetail from './components/ArticlesDetail';
 import EditArticle from './components/EditArticle';
+import NotFound    from './components/NotFound';
+import Login from './components/Login';
 
 import HeroHeader from './components/Hero-Header';
 
@@ -27,12 +29,16 @@ ReactDOM.render(
         <Route path="/" component={ App } >
 
             <IndexRoute component={HeroHeader} />
-            <Route path="articles" component={Articles} />
 
+            <Route path="articles" component={Articles} />
             <Route path="articles/:id" component={ArticlesDetail} />
+
             <Route path="admin" component={AdminDashboard} />
             <Route path="admin/add" component={AddNewArticle} />
             <Route path="admin/edit/:id" component={EditArticle} />
+
+            <Route path="login" component={Login} />
+            <Route path="*" component={NotFound} />
 
         </Route>
 

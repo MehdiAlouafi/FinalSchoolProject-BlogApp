@@ -1,6 +1,39 @@
 import React from 'react';
 import ajax  from 'superagent';
 
+class Title extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      editing: false
+    }
+  }
+  edit() {
+    this.setState({editing: true});
+  }
+  save() {
+    this.props.saveNewTitle(this.refs.newTitle.value, this.props.id);
+
+    this.setState({editing: false});
+    console.log("hey")
+  }
+  render() {
+    if(this.state.editing === false ){
+      return (
+        <h1 onClick={this.edit.bind(this)}>{this.props.children}</h1>
+      );
+    } else {
+      return (
+        <div>
+
+          <textarea ref="newTitle" defaultValue={this.props.children}></textarea>
+          <button onClick={this.save.bind(this)} >save</button>
+
+        </div>
+      );
+    }
+  }
+}
 class Head extends React.Component {
   constructor() {
     super();
@@ -88,6 +121,20 @@ export default class EditArticle extends React.Component {
       })
 
   }
+  saveNewTitle(newText, id) {
+    var newState = this.state.article;
+    newState.title = newText;
+
+    this.setState({newState});
+    ajax
+      .put(`http://localhost:3000/api/articles/${id}`)
+      .send({title: newText})
+      .end((err,res) => {
+        if(!err && res) {
+          console.log("success");
+        }
+      })
+  }
   renderPreview() {
     return this.state.article.content.map((elem,i)=> {
       if(elem.tag === "h2") {
@@ -121,7 +168,7 @@ export default class EditArticle extends React.Component {
     return (
       <div className="wrapper">
         <div className="preview">
-          <h1>{this.state.article.title}</h1>
+          <Title id={this.state.article._id} saveNewTitle={this.saveNewTitle.bind(this)}>{this.state.article.title}</Title>
           {content}
         </div>
         <button> Save </button>

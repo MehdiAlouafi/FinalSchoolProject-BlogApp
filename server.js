@@ -1,30 +1,45 @@
 /* eslint no-console: 0 */
 
-const path = require('path');
-const express = require('express');
-const webpack = require('webpack');
-const webpackMiddleware = require('webpack-dev-middleware');
+const path                 = require('path');
+const express              = require('express');
+const webpack              = require('webpack');
+const webpackMiddleware    = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
-const config = require('./webpack.config.js');
-const bodyParser = require('body-parser');
-const isDeveloping = process.env.NODE_ENV !== 'production';
-const port = isDeveloping ? 3000 : process.env.PORT;
-const app = express();
-const restful = require('node-restful');
-const mongoose = restful.mongoose;
-const ajax    = require('superagent');
-var ObjectId = mongoose.Schema.Types.ObjectId;
-
-//MongoDb
-
-mongoose.connect('mongodb://admin:admin@ds145325.mlab.com:45325/blog_eval_simplon')
+const config               = require('./webpack.config.js');
+const bodyParser           = require('body-parser');
+const isDeveloping         = process.env.NODE_ENV !== 'production';
+const port                 = isDeveloping ? 3000 : process.env.PORT;
+const app                  = express();
+const restful              = require('node-restful');
+const mongoose             = restful.mongoose;
+const ajax                 = require('superagent');
+var ObjectId               = mongoose.Schema.Types.ObjectId;
+var morgan                 = require('morgan');
+var passport               = require("passport");
+var jwt                    = require("jsonwebtoken");
+var db                     = require("./config/main.js");
+var Users                  = require('./models/users.js').user;
+var checkingPassword       = require('./models/users').checkingPassword;
 
 //Express
-
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+// Log requests to console
+app.use(morgan('dev'));
+
+// Initialize passport
+app.use(passport.initialize());
+
+//MongoDb
+mongoose.connect(db.database);
+
+//Bring in passport Strategy
+require('./config/passport')(passport);
+
 //Router Api
+Users.register(app,'/api/authenticate');
+
 
 var blogSchema = restful.model('blog-schema', mongoose.Schema({
   title: String,
@@ -33,7 +48,9 @@ var blogSchema = restful.model('blog-schema', mongoose.Schema({
   comments: [{ body: String, date: Date}],
   createdAt: {type: Date, default: Date.now}
 },{collection: 'blogApp'})).methods(['put','get','post','delete']);
+
 blogSchema.register(app,'/api/articles');
+
 
 
 //Get /contact and sending file just to test
@@ -56,6 +73,8 @@ app.post('/admin/edit/:id', function(req, res) {
   );
 
 });
+
+
 app.post('/admin/add', function(req, res) {
   if(req.body.isPublished !== undefined) {
   }
@@ -87,6 +106,59 @@ app.post('/admin/add', function(req, res) {
 
 
 });
+//
+// app.post('/register', function(req,res) {
+//   if(!req.body.email || !req.body.password) {
+//     res.json({success: false, message: 'Please enter an email'})
+//   } else {
+//     var newUser = new Users({
+//       email: req.body.email,
+//       password: req.body.password
+//     });
+//     if(newUser.email === "alouafi.mehdi@gmail.com") {
+//       newUser.admin = true;
+//     }
+//   }
+//   newUser.save(function(err) {
+//     if(err) throw err;
+//     else {
+//       res.json({success: true, message: 'Successfully created new User'});
+//     }
+//   })
+// });
+app.post('/login', function(req,res) {
+  Users.findOne({
+    email: req.body.email
+  }, function(err, user) {
+    if(err) throw err;
+
+    if(!user) {
+      res.send({success: false, message: 'Authentication Failed, User not found.'});
+    } else {
+      //Check passwords
+      checkingPassword(req.body.password, user.password, function(err, isMatch) {
+        if(isMatch && !err) {
+          //Create token
+          var token = jwt.sign(user,db.secret, {
+            expiresIn: 1008000
+          });
+          res.json({success: true, jwtToken: "JWT "+token});
+        } else {
+          res.json({success: false, message: 'Authentication failed, wrong password buddy'});
+
+        }
+      });
+    }
+  });
+});
+
+//Protect Admin Route
+
+app.get('/admin', passport.authenticate('jwt',{session: false}), function(req,res) {
+  res.send('it worked ' + req.user._id);
+});
+
+
 
 //express check for any POST request in /contact
 //We store the request body in data
