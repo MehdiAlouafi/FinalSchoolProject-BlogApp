@@ -75,7 +75,7 @@ app.post('/admin/edit/:id', function(req, res) {
 });
 
 
-app.post('/admin/add', function(req, res) {
+app.post('/admin/add', passport.authenticate('jwt',{session: false}), function(req, res) {
   if(req.body.isPublished !== undefined) {
   }
   var articleToSave = req.body;
@@ -140,12 +140,11 @@ app.post('/login', function(req,res) {
         if(isMatch && !err) {
           //Create token
           var token = jwt.sign(user,db.secret, {
-            expiresIn: 1008000
+            expiresIn: 10800
           });
           res.json({success: true, jwtToken: "JWT "+token});
         } else {
           res.json({success: false, message: 'Authentication failed, wrong password buddy'});
-
         }
       });
     }
@@ -154,9 +153,9 @@ app.post('/login', function(req,res) {
 
 //Protect Admin Route
 
-app.get('/admin', passport.authenticate('jwt',{session: false}), function(req,res) {
-  res.send('it worked ' + req.user._id);
-});
+// app.get('/admin', passport.authenticate('jwt',{session: false}), function(req,res) {
+//   res.send('it worked ' + req.user._id);
+// });
 
 
 

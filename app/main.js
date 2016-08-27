@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute } from 'react-router';
 import { browserHistory } from 'react-router';
-
+import { getToken } from './auth';
 // Stylesheet
 
 require('./styles/normalize.css');
@@ -22,6 +22,18 @@ import Login from './components/Login';
 import HeroHeader from './components/Hero-Header';
 
 import App from './pages/App';
+
+import auth from './auth';
+function isAuthenticate(nextState, replace) {
+
+  if(!auth.loggedIn()) {
+    console.log("nothing to do here");
+    replace({
+      pathname: '/login',
+      state: {nextPathname: nextState.location.pathname}
+    })
+  } 
+}
 ReactDOM.render(
 
     <Router history={browserHistory}>
@@ -33,7 +45,7 @@ ReactDOM.render(
             <Route path="articles" component={Articles} />
             <Route path="articles/:id" component={ArticlesDetail} />
 
-            <Route path="admin" component={AdminDashboard} />
+            <Route path="admin" component={AdminDashboard} onEnter={isAuthenticate} />
             <Route path="admin/add" component={AddNewArticle} />
             <Route path="admin/edit/:id" component={EditArticle} />
 

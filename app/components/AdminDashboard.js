@@ -14,8 +14,10 @@ export default class AdminDashboard extends React.Component {
   loader() {
     return (<div className="loader"></div>)
   }
+
   loadsArticles(baseUrl) {
     ajax.get(`${baseUrl}/api/articles`)
+        .set('Authorization', window.localStorage.token)
         .end((err, res) => {
           if(!err && res) {
             this.setState({articles: res.body});
@@ -35,6 +37,7 @@ export default class AdminDashboard extends React.Component {
     if(choice === true) {
       ajax
         .del(`${window.location.origin}/api/articles/${id}`)
+        .set('Authorization', window.localStorage.token)
         .end(( err , res ) => {
           if(!err && res ) {
 

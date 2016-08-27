@@ -113,6 +113,7 @@ export default class EditArticle extends React.Component {
     this.setState({newState});
     ajax
       .post(`http://localhost:3000/admin/edit/${newState._id}`)
+      .set('Authorization', window.localStorage.token)
       .send({element: newState.content[index]._id, newText: newText})
       .end((err,res)=>{
         if(!err && res) {
