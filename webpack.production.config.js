@@ -5,6 +5,11 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var StatsPlugin = require('stats-webpack-plugin');
+const sassLoaders = [
+  'css-loader',
+  'postcss-loader',
+  'sass-loader?indentedSyntax=sass&includePaths[]=' + path.resolve(__dirname, './src')
+]
 
 module.exports = {
   entry: [
@@ -43,17 +48,25 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'babel',
       query: {
-        "presets": ["es2015", "stage-0", "react"]
+        "presets": ["react", "es2015", "stage-0", "react-hmre"]
       }
     }, {
       test: /\.json?$/,
       loader: 'json'
     }, {
+      test: /\.sass$/,
+      loader: ExtractTextPlugin.extract('style-loader', sassLoaders.join('!'))
+    }, {
       test: /\.css$/,
-      loader: ExtractTextPlugin.extract('style', 'css?modules&localIdentName=[name]---[local]---[hash:base64:5]!postcss')
+      loader: "style-loader!css-loader"
+    }, {
+      test: /\.(png|jpg|gif)$/,
+      include: path.join(__dirname),
+      loader: 'url-loader'
+    },{
+      test: /\.(woff|woff2|eot|ttf|svg|otf)$/,
+      exclude: /node_modules/,
+      loader: 'url-loader?limit=1024&name=fonts/[name].[ext]'
     }]
-  },
-  postcss: [
-    require('autoprefixer')
-  ]
-};
+  }
+}

@@ -3,7 +3,12 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const sassLoaders = [
+  'css-loader',
+  'postcss-loader',
+  'sass-loader?indentedSyntax=sass&includePaths[]=' + path.resolve(__dirname, './src')
+]
 module.exports = {
   devtool: 'eval-source-map',
   entry: [
@@ -26,7 +31,8 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
-    })
+    }),
+    new ExtractTextPlugin("style.css")
   ],
   module: {
     loaders: [{
@@ -40,11 +46,11 @@ module.exports = {
       test: /\.json?$/,
       loader: 'json'
     }, {
-      test: /\.sass/,
-      loaders: ["style","css","sass"]
+      test: /\.sass$/,
+      loader: ExtractTextPlugin.extract('style-loader',sassLoaders.join('!'))
     }, {
-      test: /\.css/,
-      loaders: ["style","css","sass"]
+      test: /\.css$/,
+      loader: "style-loader!css-loader"
     }, {
       test: /\.(png|jpg|gif)$/,
       include: path.join(__dirname),
