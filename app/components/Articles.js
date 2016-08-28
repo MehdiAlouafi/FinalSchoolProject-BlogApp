@@ -21,8 +21,6 @@ export default class Articles extends React.Component {
           if(!err && res) {
               this.setState({articles: res.body});
 
-          } else {
-            console.log("There was an error fetching data " + err);
           }
         });
   }

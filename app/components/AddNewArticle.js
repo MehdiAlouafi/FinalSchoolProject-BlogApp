@@ -25,9 +25,7 @@ export default class AddNewArticle extends React.Component {
 
     this.setState({title: newText.value});
   }
-  renderExemple() {
-    console.log("test");
-  }
+
   postRequest() {
           ajax.post(`${window.location.origin}/admin/add`)
               .set('Authorization', window.localStorage.token)
@@ -40,13 +38,9 @@ export default class AddNewArticle extends React.Component {
               )
               .end((err, res) => {
                 if(!err && res) {
-                  console.log("yah");
                   if(res.status === 200) {
-
                     this.setState({saved: true});
                   }
-                } else {
-                  console.log("breuk");
                 }
               })
   }

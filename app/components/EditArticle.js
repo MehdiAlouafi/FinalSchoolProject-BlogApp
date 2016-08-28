@@ -116,7 +116,6 @@ export default class EditArticle extends React.Component {
       .send({element: newState.content[index]._id, newText: newText})
       .end((err,res)=>{
         if(!err && res) {
-          console.log(res.body);
         }
       })
 

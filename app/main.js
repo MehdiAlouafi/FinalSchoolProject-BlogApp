@@ -27,7 +27,6 @@ import auth from './auth';
 function isAuthenticate(nextState, replace) {
 
   if(!auth.loggedIn()) {
-    console.log("nothing to do here");
     replace({
       pathname: '/login',
       state: {nextPathname: nextState.location.pathname}

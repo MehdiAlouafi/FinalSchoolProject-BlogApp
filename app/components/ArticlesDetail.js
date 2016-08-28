@@ -15,9 +15,7 @@ export default class ArticleDetail extends React.Component {
         .end((err, res) => {
           if(!err && res) {
             this.setState({article: res.body})
-          } else {
-            console.log("big fail bruh");
-          }
+          } 
         })
   }
   componentDidMount() {
