@@ -17,7 +17,7 @@ class Login extends React.Component {
     const email = this.refs.email.value;
     const password = this.refs.password.value;
     ajax
-      .post("http://localhost:3000/login")
+      .post(`${window.location.origin}/login`)
       .send({email: email, password: password})
       .end((err,res)=>{
         if(!err && res) {
@@ -49,10 +49,10 @@ class Login extends React.Component {
       <div className="wrapper">
         {flashMessage}
 
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <input type="email" name="email" ref="email" />
-          <input type="password" ref="password" />
-          <input type="submit" onSubmit={this.test} name="Submit" />
+        <form className="login" onSubmit={this.handleSubmit.bind(this)}>
+          <input className="login__input" type="email" ref="email" placeholder="email@exemple.com"/>
+          <input className="login__input" type="password" ref="password" placeholder="password"/>
+          <input className="login__submit" type="submit" onSubmit={this.test} name="Submit" />
         </form>
       </div>
     )

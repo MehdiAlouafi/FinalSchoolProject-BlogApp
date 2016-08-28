@@ -24,19 +24,18 @@ export default class ArticleDetail extends React.Component {
     this.fetchArticle();
   }
   renderArticle(article) {
-    console.log(article);
       return (
-          <div>
-            <h1>{article.title}</h1>
+          <div className="wrapper article-detail">
+            <h1 className="article-detail__title">{article.title}</h1>
             {
               article.content.map((text, i) => {
                 if(text.tag === "h2") {
 
-                  return (<h2 key={text._id}>{text.body}</h2>);
+                  return (<h2 className="article-detail__head" key={text._id}>{text.body}</h2>);
 
                 } else {
 
-                  return (<p key={text._id}>{text.body}</p>);
+                  return (<p className="article-detail__paragraph" key={text._id}>{text.body}</p>);
 
                 }
               })

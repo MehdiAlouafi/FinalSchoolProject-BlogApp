@@ -34,7 +34,8 @@ export default class AddNewArticle extends React.Component {
               .send(
                   {
                     title: this.state.title,
-                    content: this.state.article
+                    content: this.state.article,
+                    published: true
                   }
               )
               .end((err, res) => {
@@ -51,7 +52,7 @@ export default class AddNewArticle extends React.Component {
   }
   render() {
     if(this.state.saved === true) {
-      return <p>"YAH"</p>
+      return (<div className="article-saved"><p>Article posté avec succés</p></div>)
     }
     return (
       <div className="editor">

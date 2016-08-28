@@ -45,6 +45,7 @@ Feed.register(app,'/api/feed');
 var blogSchema = restful.model('blog-schema', mongoose.Schema({
   title: String,
   preview: String,
+  published: Boolean,
   content: [{tag: String, body: String}],
   comments: [{ body: String, date: Date}],
   createdAt: {type: String}
@@ -95,14 +96,15 @@ app.post('/admin/add', passport.authenticate('jwt',{session: false}), function(r
   today = dd+'/'+mm+'/'+yyyy
   var  content   = articleToSave.content;
   var  title     = articleToSave.title;
-
+  var  published = articleToSave.published;
   var  type      = articleToSave.type;
   // Instantiate a new entry
   var newArticle = new blogSchema();
 
-  newArticle.createdAt    = today
-  newArticle.title   = title;
-  newArticle.content = [];
+  newArticle.published = published;
+  newArticle.createdAt = today;
+  newArticle.title     = title;
+  newArticle.content   = [];
   content.map(function(e,i){
     newArticle.content.push({
       tag: e.tag,

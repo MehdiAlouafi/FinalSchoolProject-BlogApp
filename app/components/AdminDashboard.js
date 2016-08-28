@@ -50,7 +50,21 @@ export default class AdminDashboard extends React.Component {
     }
 
   }
+  publishArticle(obj) {
+    var id = obj.id;
+    var currentState = obj.published;
+    ajax
+      .put(`${window.location.origin}/api/articles/${id}`)
+      .set('Authorization', window.localStorage.token)
+      .send({published: !obj.published})
+      .end(( err , res ) => {
+        if(!err && res ) {
 
+          this.setState({published: !obj.published});
+
+        }
+      })
+  }
   renderArticles() {
     return this.state.articles.map((element, i) => {
       return (
@@ -60,6 +74,7 @@ export default class AdminDashboard extends React.Component {
           class="dashboard"
           title={element.title}
           deleteArticle={this.deleteArticle}
+          publishArticle={this.publishArticle}
         />
       );
     })

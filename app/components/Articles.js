@@ -28,25 +28,25 @@ export default class Articles extends React.Component {
   }
   renderArticles() {
     return this.state.articles.map((article,i)=>{
+      if(article.published) {
+        return (
 
-      return (
+          <div className="articles clearfix" key={i}>
 
-        <div className="articles clearfix" key={i}>
+            <div className="articles__head">
+              <h2 className="articles__title">{article.title}</h2>
+              <p className="articles__date">{article.createdAt}</p>
 
-          <div className="articles__head">
-            <h2 className="articles__title">{article.title}</h2>
-            <p className="articles__date">{article.createdAt}</p>
+            </div>
+
+            <div className="articles__body">
+              <p>{article.content[1].body}</p>
+              <Link to={`articles/${article._id}`}><button className="articles__button"> Lire la suite </button></Link>
+            </div>
 
           </div>
-
-          <div className="articles__body">
-            <p>{article.content[1].body}</p>
-            <Link to={`articles/${article._id}`}><button className="articles__button"> Lire la suite </button></Link>
-          </div>
-
-        </div>
-      );
-
+        );
+      }
     })
   }
 

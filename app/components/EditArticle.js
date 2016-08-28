@@ -1,6 +1,6 @@
 import React from 'react';
 import ajax  from 'superagent';
-
+import {Link} from 'react-router';
 class Title extends React.Component {
   constructor() {
     super();
@@ -15,7 +15,6 @@ class Title extends React.Component {
     this.props.saveNewTitle(this.refs.newTitle.value, this.props.id);
 
     this.setState({editing: false});
-    console.log("hey")
   }
   render() {
     if(this.state.editing === false ){
@@ -24,9 +23,9 @@ class Title extends React.Component {
       );
     } else {
       return (
-        <div>
+        <div className="editing">
 
-          <textarea ref="newTitle" defaultValue={this.props.children}></textarea>
+          <textarea className="editing__title" ref="newTitle" defaultValue={this.props.children}></textarea>
           <button onClick={this.save.bind(this)} >save</button>
 
         </div>
@@ -60,7 +59,7 @@ class Head extends React.Component {
       return (
         <div>
 
-          <textarea ref="newText" defaultValue={this.props.children}></textarea>
+          <textarea ref="newText" className="editing__text" defaultValue={this.props.children}></textarea>
           <button onClick={this.save.bind(this)} >save</button>
 
         </div>
@@ -91,7 +90,7 @@ class Paragraph extends React.Component {
     } else {
       return (
         <div>
-          <textarea ref="newParagraph" defaultValue={this.props.children}></textarea>
+          <textarea className="editing__text" ref="newParagraph" defaultValue={this.props.children}></textarea>
           <button onClick={this.save.bind(this)}> save </button>
         </div>
       );
@@ -112,7 +111,7 @@ export default class EditArticle extends React.Component {
 
     this.setState({newState});
     ajax
-      .post(`http://localhost:3000/admin/edit/${newState._id}`)
+      .post(`${window.location.origin}/admin/edit/${newState._id}`)
       .set('Authorization', window.localStorage.token)
       .send({element: newState.content[index]._id, newText: newText})
       .end((err,res)=>{
@@ -128,7 +127,8 @@ export default class EditArticle extends React.Component {
 
     this.setState({newState});
     ajax
-      .put(`http://localhost:3000/api/articles/${id}`)
+      .put(`${window.location.origin}/api/articles/${id}`)
+      .set('Authorization', window.localStorage.token)
       .send({title: newText})
       .end((err,res) => {
         if(!err && res) {
@@ -148,7 +148,7 @@ export default class EditArticle extends React.Component {
 
   fetchArticle(id) {
     ajax
-      .get(`http://localhost:3000/api/articles/${id}`)
+      .get(`${window.location.origin}/api/articles/${id}`)
       .end((err,res) => {
         if(!err && res) {
           this.setState({article: res.body});
@@ -172,7 +172,12 @@ export default class EditArticle extends React.Component {
           <Title id={this.state.article._id} saveNewTitle={this.saveNewTitle.bind(this)}>{this.state.article.title}</Title>
           {content}
         </div>
-        <button> Save </button>
+        <Link to="/admin">
+          <button className="edit-article__button">
+            <i className="fa fa-arrow-left" ariaHidden="true"></i>
+            Dashboard
+          </button>
+        </Link>
       </div>
     );
   }

@@ -16,7 +16,7 @@ export default class Navigation extends React.Component {
           <nav className="nav">
               <Link to="/">Home</Link>
               <Link to="/articles">Articles</Link>
-              <Link to="/contact">Contact</Link>
+              <a target="_blank" href="http://mehdialouafi.github.io/Portfolio">Portfolio</a>
               {
                 auth.loggedIn() ?  (<Link to="/admin">Dashboard</Link>) :  (<Link to="/login">Login</Link>)
               }

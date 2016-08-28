@@ -37,7 +37,7 @@ export default class Feed extends React.Component {
     let flashMessage;
 
     if(this.state.success) {
-      flashMessage = (<div className="flash__feed">cool</div>)
+      flashMessage = (<div className="flash__feed"><p>Nouveau feed ajouté</p></div>)
     }
 
     return (
