@@ -69,12 +69,12 @@ export default class AddNewArticle extends React.Component {
             })
         }
         <textarea ref="newText" type="text" ></textarea>
-
-        <button onClick={this.postRequest.bind(this)}>Post it</button>
-        <button onClick={this.addTitle.bind(this)}>New title</button>
-        <button onClick={this.addContent.bind(this, "p")}>Click paragraph</button>
-        <button onClick={this.addContent.bind(this, "h2")}>click h2</button>
-
+        <div className="editor__controls">
+          <button onClick={this.postRequest.bind(this)}>Post it</button>
+          <button onClick={this.addTitle.bind(this)}>New title</button>
+          <button onClick={this.addContent.bind(this, "p")}>Click paragraph</button>
+          <button onClick={this.addContent.bind(this, "h2")}>click h2</button>
+        </div>
       </div>
 
     );
