@@ -4,6 +4,8 @@ import auth from '../auth';
 
 // mettre les styles du wrapper ici pour éviter des pb de DOM REACT
 export default class Navigation extends React.Component {
+
+
   render() {
     return (
     <div className="navigation">

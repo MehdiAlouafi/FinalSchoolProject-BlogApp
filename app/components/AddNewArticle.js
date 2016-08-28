@@ -29,7 +29,7 @@ export default class AddNewArticle extends React.Component {
     console.log("test");
   }
   postRequest() {
-          ajax.post("http://localhost:3000/admin/add")
+          ajax.post(`${window.location.origin}/admin/add`)
               .set('Authorization', window.localStorage.token)
               .send(
                   {

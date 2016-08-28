@@ -20,7 +20,7 @@ var jwt                    = require("jsonwebtoken");
 var db                     = require("./config/main.js");
 var Users                  = require('./models/users.js').user;
 var checkingPassword       = require('./models/users').checkingPassword;
-
+var Feed                   = require('./models/feed');
 //Express
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -39,6 +39,7 @@ require('./config/passport')(passport);
 
 //Router Api
 Users.register(app,'/api/authenticate');
+Feed.register(app,'/api/feed');
 
 
 var blogSchema = restful.model('blog-schema', mongoose.Schema({
@@ -46,12 +47,20 @@ var blogSchema = restful.model('blog-schema', mongoose.Schema({
   preview: String,
   content: [{tag: String, body: String}],
   comments: [{ body: String, date: Date}],
-  createdAt: {type: Date, default: Date.now}
+  createdAt: {type: String}
 },{collection: 'blogApp'})).methods(['put','get','post','delete']);
 
 blogSchema.register(app,'/api/articles');
 
-
+app.post('/addFeed',passport.authenticate('jwt',{session: false}), function(req,res) {
+  var content = req.body.body;
+  var newFeed = new Feed();
+  newFeed.body = content;
+  newFeed.save(function(err) {
+    if(err) throw err;
+    res.sendStatus(200);
+  })
+})
 app.post('/admin/edit/:id', function(req, res) {
   console.log(req.body);
   console.log(req.params.id);
@@ -73,13 +82,26 @@ app.post('/admin/add', passport.authenticate('jwt',{session: false}), function(r
   }
   var articleToSave = req.body;
   // Referencing the data we want to push
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; //January is 0!
+  var yyyy = today.getFullYear();
+  if(dd < 10) {
+    dd = '0' + dd
+  }
+  if(mm < 0) {
+    mm = '0' + mm
+  }
+  today = dd+'/'+mm+'/'+yyyy
   var  content   = articleToSave.content;
   var  title     = articleToSave.title;
+
   var  type      = articleToSave.type;
   // Instantiate a new entry
   var newArticle = new blogSchema();
 
-  newArticle.title = title;
+  newArticle.createdAt    = today
+  newArticle.title   = title;
   newArticle.content = [];
   content.map(function(e,i){
     newArticle.content.push({
@@ -133,7 +155,7 @@ app.post('/login', function(req,res) {
         if(isMatch && !err) {
           //Create token
           var token = jwt.sign(user,db.secret, {
-            expiresIn: 10800
+            expiresIn: 108000
           });
           res.json({success: true, jwtToken: "JWT "+token});
         } else {

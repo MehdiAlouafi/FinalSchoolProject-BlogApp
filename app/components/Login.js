@@ -9,7 +9,6 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      success: false,
       message: ""
     }
   }
@@ -24,10 +23,11 @@ class Login extends React.Component {
         if(!err && res) {
           if(res.body.success === true) {
             window.localStorage.token = res.body.jwtToken;
-            this.setState({success: res.body.success});
+            this.setState({success: true});
 
           } else {
             delete window.localStorage.token;
+            this.setState({success: false})
             this.setState({message: res.body.message});
 
           }
@@ -37,13 +37,18 @@ class Login extends React.Component {
   }
   render() {
     let flashMessage;
-    flashMessage = this.state.message;
-    if (this.state.success === true) {
+    // if (this.state.success === true) {
+    //   this.context.router.push('admin');
+    // }
+    if (this.state.success) {
       this.context.router.push('admin');
+    } else if(this.state.success === false) {
+      flashMessage = (<div className="authorization-error">{this.state.message}</div>);
     }
     return (
-      <div>
-        <p>{flashMessage}</p>
+      <div className="wrapper">
+        {flashMessage}
+
         <form onSubmit={this.handleSubmit.bind(this)}>
           <input type="email" name="email" ref="email" />
           <input type="password" ref="password" />

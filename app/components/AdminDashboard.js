@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 
 import ajax  from 'superagent';
 
+import Feed  from './Feed';
+
 import ArticlePanel from './ArticlePanel';
 export default class AdminDashboard extends React.Component {
   constructor() {
@@ -72,7 +74,8 @@ export default class AdminDashboard extends React.Component {
 
     return (
       <div className="wrapper">
-        <Link to="/admin/add"> New Post </Link>
+        <Feed />
+        <Link to="/admin/add"> <button className="add-article">Ajoutez un article <i className="fa fa-plus" ariaHidden="true"></i></button> </Link>
         {content}
       </div>
     );

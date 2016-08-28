@@ -20,7 +20,7 @@ export default class Articles extends React.Component {
         .end((err, res) => {
           if(!err && res) {
               this.setState({articles: res.body});
-            
+
           } else {
             console.log("There was an error fetching data " + err);
           }
@@ -31,7 +31,7 @@ export default class Articles extends React.Component {
 
       return (
 
-        <div className="articles"key={i}>
+        <div className="articles clearfix" key={i}>
 
           <div className="articles__head">
             <h2 className="articles__title">{article.title}</h2>
@@ -40,8 +40,8 @@ export default class Articles extends React.Component {
           </div>
 
           <div className="articles__body">
-            <p>{article.preview}</p>
-            <Link to={`articles/${article._id}`}> CLICK </Link>
+            <p>{article.content[1].body}</p>
+            <Link to={`articles/${article._id}`}><button className="articles__button"> Lire la suite </button></Link>
           </div>
 
         </div>
