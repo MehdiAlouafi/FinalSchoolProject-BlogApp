@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
+import auth from '../auth';
+
 // mettre les styles du wrapper ici pour éviter des pb de DOM REACT
 export default class Navigation extends React.Component {
   render() {
@@ -7,13 +9,15 @@ export default class Navigation extends React.Component {
     <div className="navigation">
       <header className="wrapper main_header clearfix">
           <div className="logo">
-              <h1>MehdiA</h1>
+              <Link to="/"><h1>MehdiA</h1></Link>
           </div>
           <nav className="nav">
               <Link to="/">Home</Link>
               <Link to="/articles">Articles</Link>
               <Link to="/contact">Contact</Link>
-              <Link to="/login">Login</Link>
+              {
+                auth.loggedIn() ?  (<Link to="/admin">Dashboard</Link>) :  (<Link to="/login">Login</Link>)
+              }
           </nav>
       </header>
     </div>

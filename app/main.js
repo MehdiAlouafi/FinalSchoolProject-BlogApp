@@ -32,7 +32,7 @@ function isAuthenticate(nextState, replace) {
       pathname: '/login',
       state: {nextPathname: nextState.location.pathname}
     })
-  } 
+  }
 }
 ReactDOM.render(
 

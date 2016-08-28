@@ -52,13 +52,6 @@ var blogSchema = restful.model('blog-schema', mongoose.Schema({
 blogSchema.register(app,'/api/articles');
 
 
-
-//Get /contact and sending file just to test
-
-app.get('/contact',function(req,res) {
-  res.sendFile(path.join(__dirname+"/contact.html"))
-});
-
 app.post('/admin/edit/:id', function(req, res) {
   console.log(req.body);
   console.log(req.params.id);
@@ -106,26 +99,26 @@ app.post('/admin/add', passport.authenticate('jwt',{session: false}), function(r
 
 
 });
-//
-// app.post('/register', function(req,res) {
-//   if(!req.body.email || !req.body.password) {
-//     res.json({success: false, message: 'Please enter an email'})
-//   } else {
-//     var newUser = new Users({
-//       email: req.body.email,
-//       password: req.body.password
-//     });
-//     if(newUser.email === "alouafi.mehdi@gmail.com") {
-//       newUser.admin = true;
-//     }
-//   }
-//   newUser.save(function(err) {
-//     if(err) throw err;
-//     else {
-//       res.json({success: true, message: 'Successfully created new User'});
-//     }
-//   })
-// });
+
+app.post('/register', function(req,res) {
+  if(!req.body.email || !req.body.password) {
+    res.json({success: false, message: 'Please enter an email'})
+  } else {
+    var newUser = new Users({
+      email: req.body.email,
+      password: req.body.password
+    });
+    if(newUser.email === "alouafi.mehdi@gmail.com") {
+      newUser.admin = true;
+    }
+  }
+  newUser.save(function(err) {
+    if(err) throw err;
+    else {
+      res.json({success: true, message: 'Successfully created new User'});
+    }
+  })
+});
 app.post('/login', function(req,res) {
   Users.findOne({
     email: req.body.email

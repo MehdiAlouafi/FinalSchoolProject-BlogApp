@@ -10,7 +10,7 @@ export default class ArticlePanel extends React.Component {
 
     }
   }
-
+  
   render() {
     const { title, id } = this.props;
     if(this.state.active === "deleted") {
