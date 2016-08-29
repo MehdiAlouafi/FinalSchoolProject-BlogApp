@@ -15,11 +15,14 @@ export default class ArticleDetail extends React.Component {
         .end((err, res) => {
           if(!err && res) {
             this.setState({article: res.body})
-          } 
+          }
         })
   }
   componentDidMount() {
     this.fetchArticle();
+  }
+  loader() {
+    return (<div className="loader"></div>);
   }
   renderArticle(article) {
       return (
@@ -46,7 +49,7 @@ export default class ArticleDetail extends React.Component {
   render() {
     let content;
     if(typeof(this.state.article.title) === "undefined") {
-      content = "Loading";
+      content = this.loader();
     } else {
       content = this.renderArticle(this.state.article);
     }

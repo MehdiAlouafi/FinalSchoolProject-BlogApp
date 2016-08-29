@@ -48,7 +48,7 @@ class Login extends React.Component {
     return (
       <div className="wrapper">
         {flashMessage}
-
+        <h2 className="login__message">Seul l'admin peut se connecter pour le moment.</h2>
         <form className="login" onSubmit={this.handleSubmit.bind(this)}>
           <input className="login__input" type="email" ref="email" placeholder="email@exemple.com"/>
           <input className="login__input" type="password" ref="password" placeholder="password"/>
