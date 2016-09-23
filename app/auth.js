@@ -4,5 +4,9 @@ module.exports = {
   },
   loggedIn: function() {
     return !!window.localStorage.token
+},
+  logout: function() {
+      delete window.localStorage.token
+      return
   }
 }

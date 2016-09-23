@@ -5,6 +5,9 @@ import auth from '../auth';
 // mettre les styles du wrapper ici pour éviter des pb de DOM REACT
 export default class Navigation extends React.Component {
 
+    static contextTypes = {
+      router: function(){ return React.PropTypes.func.isRequired;}
+    }
 
   render() {
     return (
@@ -18,8 +21,14 @@ export default class Navigation extends React.Component {
               <Link to="/articles">Articles</Link>
               <a target="_blank" href="http://mehdialouafi.github.io/Portfolio">Portfolio</a>
               {
-                auth.loggedIn() ?  (<Link to="/admin">Dashboard</Link>) :  (<Link to="/login">Login</Link>)
+                auth.loggedIn() ?  (
+                    <Link onClick={()=> {
+                        auth.logout();
+                    }} to="/login">Logout</Link>
+                ) :
+                (<Link to="/login">Login</Link>)
               }
+
           </nav>
       </header>
     </div>
