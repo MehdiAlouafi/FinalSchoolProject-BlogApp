@@ -6,7 +6,7 @@ import auth from '../auth';
 export default class Navigation extends React.Component {
 
     static contextTypes = {
-      router: function(){ return React.PropTypes.func.isRequired;}
+      router: function(){ return React.PropTypes.func.isRequired }
     }
 
   render() {
